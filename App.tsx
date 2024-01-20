@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { } from 'react';
+import { ThemeProvider } from 'styled-components/native';
 
 import { AuthProvider } from './src/contexts/AuthContext';
-import Login from './src/screens/Login/Login';
+import Home from './src/screens/Home/Home';
+import { theme } from './src/theme/theme';
 
 export default function App() {
 
@@ -19,7 +19,9 @@ export default function App() {
 
   return (
       <AuthProvider>
-        <Login/>
+        <ThemeProvider theme={theme}>
+          <Home/>
+        </ThemeProvider>
       </AuthProvider>
 
   );
