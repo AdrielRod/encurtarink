@@ -7,11 +7,11 @@ export async function signIn(req: Request, res: Response){
     const user = USER_DB.find(item => item.email == email)
 
     if(!user){
-        throw new Error("Não foi possivel encontrar o usuário ou email incorreto.")
+        return res.status(400).json({message: "Não foi possivel encontrar o usuário ou email incorreto."})
     }
 
     if (user.password !== password) {
-        throw new Error("Email ou senha incorretos.");
+        return res.status(400).json({message: "Usuário ou senha incorretos."})
       }
 
     const token = sign(

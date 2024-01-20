@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, Image, Keyboard, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { AuthContext } from '../../contexts/AuthContext';
-import { Container, ContainerInput, Logo } from './LoginStyles';
+import { AreaPressable, Container, ContainerInput, Logo } from './LoginStyles';
 import { Title } from '../../components/interface';
+import { FloatingInput } from '../../components/animations';
 
 
 export default function Login() {
@@ -20,11 +21,15 @@ export default function Login() {
 
 
     return (
-        <Container>
-            <Logo source={require('../../assets/images/logoBig.png')}/>
-            <ContainerInput>
-                <Title text='Login' type='BLACK' containerStyles={{margin: 15}}/>
-            </ContainerInput>
-        </Container>
+        <AreaPressable onPress={() => Keyboard.dismiss()}>
+            <Container>
+                <Logo source={require('../../assets/images/logoBig.png')} />
+                <ContainerInput>
+                    <Title text='Login' type='BLACK' containerStyles={{ margin: 5 }} />
+                    <FloatingInput placeholder='Email' />
+                    <FloatingInput placeholder='Senha' />
+                </ContainerInput>
+            </Container>
+        </AreaPressable>
     );
 }
