@@ -1,5 +1,6 @@
 export type ThemeData = {
     COLORS: {
+        WHITE: string;
         BLACK_PRIMARY: string;
         BLACK_SECONDARY: string;
         BLACK_TERTIARY: string;
@@ -11,12 +12,16 @@ export type ThemeData = {
     FONT_FAMILY: {
         LALEZAR: string;
         RUBIK: string;
-        ROBOTO: string;
+        ROBOTO_BLACK: string;
+        ROBOTO_BOLD: string;
+        ROBOTO_MEDIUM: string;
+        ROBOTO_REGULAR: string;
     }
 }
 
 export const theme: ThemeData = {
     COLORS: {
+        WHITE: '#FFF',
         BLACK_PRIMARY: "#000",
         BLACK_SECONDARY: '#1E1E1E',
         BLACK_TERTIARY: '#303030',
@@ -28,6 +33,10 @@ export const theme: ThemeData = {
     FONT_FAMILY: {
         LALEZAR: 'Lalezar',
         RUBIK: 'Rubik',
-        ROBOTO: 'Roboto'
+        ROBOTO_BLACK: 'RobotoBlack',
+        ROBOTO_BOLD: 'RobotoBold',
+        ROBOTO_MEDIUM: 'RobotoMedium',
+        ROBOTO_REGULAR: 'RobotoRegular'
+
     }
 }

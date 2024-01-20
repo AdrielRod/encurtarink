@@ -3,8 +3,9 @@ import { apiLogin } from "../api/axios-config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type AuthContextData = {
-    user: UserProps;
+    user: UserProps | null;
     isAuthenticated: boolean;
+    loadingAuth: boolean;
     signIn: (email: string, password: string) => Promise<void>;
 }
 
@@ -21,13 +22,9 @@ type AuthProviderProps = {
 export const AuthContext = createContext({} as AuthContextData)
 
 export function AuthProvider({children}: AuthProviderProps){
-    const [user, setUser] = useState<UserProps>({
-        name: '',
-        email: '',
-        token: '',
-    })
+    const [user, setUser] = useState<UserProps | null>(null)
     const [loadingAuth, setLoadingAuth] = useState<boolean>(false)
-    const isAuthenticated = !!user.name
+    const isAuthenticated = !!user?.name
 
     async function signIn(email: string, password: string){
         setLoadingAuth(true)
@@ -56,7 +53,7 @@ export function AuthProvider({children}: AuthProviderProps){
     }
 
     return(
-        <AuthContext.Provider value={{user, isAuthenticated, signIn}}>
+        <AuthContext.Provider value={{user, loadingAuth, isAuthenticated, signIn}}>
             {children}
         </AuthContext.Provider>
     )
