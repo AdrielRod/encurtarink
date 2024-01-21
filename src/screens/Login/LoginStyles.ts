@@ -21,8 +21,21 @@ export const ContainerInput = styled.KeyboardAvoidingView`
     background-color: ${({ theme }) => theme.COLORS.WHITE};
     border-top-right-radius: 32px;
     border-top-left-radius: 32px;
-    height: 70%;
+    height: 60%;
     width: 100%;
     padding-left: 15px;
+    padding-top: 20px;
 
+`
+
+export const ButtonLogin = styled.TouchableOpacity`
+    width: 80%;
+    height: 55px;
+    background-color: ${({theme}) => theme.COLORS.BLUE};
+    opacity: ${({disabled}) => disabled ? 0.5 : 1};
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    margin-top: 30%;
 `

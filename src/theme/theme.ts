@@ -9,14 +9,6 @@ export type ThemeData = {
         BLUE: string;
         RED: string;
     },
-    FONT_FAMILY: {
-        LALEZAR: string;
-        RUBIK: string;
-        ROBOTO_BLACK: string;
-        ROBOTO_BOLD: string;
-        ROBOTO_MEDIUM: string;
-        ROBOTO_REGULAR: string;
-    }
 }
 
 export const theme: ThemeData = {
@@ -30,13 +22,4 @@ export const theme: ThemeData = {
         BLUE: "#1E90FF",
         RED: "#EA3838"
     },
-    FONT_FAMILY: {
-        LALEZAR: 'Lalezar',
-        RUBIK: 'Rubik',
-        ROBOTO_BLACK: 'RobotoBlack',
-        ROBOTO_BOLD: 'RobotoBold',
-        ROBOTO_MEDIUM: 'RobotoMedium',
-        ROBOTO_REGULAR: 'RobotoRegular'
-
-    }
 }

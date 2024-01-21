@@ -1,2 +1,2 @@
-export {default as Title} from './Title/Title'
-// export {default as Title} from './Title/Title'
+export {default as Label} from './Label/Label'
+export {default as CustomInput} from './CustomInput/CustomInput'
