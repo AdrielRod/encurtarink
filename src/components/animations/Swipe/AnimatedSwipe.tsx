@@ -1,6 +1,6 @@
 import React, {
     useRef,
-    ReactNode,
+    useState,
 } from 'react';
 import { Animated } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -14,45 +14,54 @@ import {
 
 
 interface IAnimatedSwipe {
-    onPress: () => void;
-    index?: number;
-    item?: {
-        memberName?: string;
-        createdAt?: Date;
-    };
-    children?: ReactNode;
+    children: React.ReactNode;
+    index: number;
+    pressFavorite: (index: number) => void;
+    pressDelete: (index: number) => void;
 }
 
 
-export default function AnimatedSwipe({ children, onPress }: IAnimatedSwipe) {
+
+export default function AnimatedSwipe({ children, pressFavorite, pressDelete, index }: IAnimatedSwipe) {
 
     const swipeableRef = useRef<Swipeable>(null);
+    const [currentIndex, setCurrentIndex] = useState<number | null>(null);
 
-    function renderRightActions(progress: Animated.AnimatedInterpolation<number>) {
+
+    function renderRightActions(
+        progress: Animated.AnimatedInterpolation<number>
+      ) {
         return (
-            <RightActionsContainer>
-                {renderRightAction({ 
-                    color: theme.COLORS.BLUE, 
-                    x: 90, progress, 
-                    icon: 'favorite',
-                    type: 'Home',
-                    close, onPress 
-                    })}
-
-                {renderRightAction({ 
-                    color: theme.COLORS.RED, 
-                    x: 82, 
-                    progress, 
-                    icon: 'trash',
-                    type: 'Home',
-                    close, onPress })}
-            </RightActionsContainer>
-        )
-    }
+          <RightActionsContainer>
+            {renderRightAction({
+              color: theme.COLORS.BLUE,
+              x: 90,
+              progress,
+              icon: 'favorite',
+              type: 'Home',
+              index: index,
+              close,
+              pressFavorite,
+            })}
+    
+            {renderRightAction({
+              color: theme.COLORS.RED,
+              x: 82,
+              progress,
+              icon: 'trash',
+              type: 'Home',
+              index: index,
+              close,
+              pressDelete,
+            })}
+          </RightActionsContainer>
+        );
+      }
 
     function close() {
         swipeableRef.current?.close();
     };
+
 
     return (
         <GestureHandlerRootView>

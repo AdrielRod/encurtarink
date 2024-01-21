@@ -25,7 +25,6 @@ export const ButtonLink = styled.TouchableOpacity`
 export const LinkText = styled.Text`
     font-size: 15px;
     overflow: hidden;
-    width: auto;
     align-self: flex-start;
     margin-top: 10px;
     margin-left: 10px;
@@ -33,7 +32,7 @@ export const LinkText = styled.Text`
 `
 
 export const BoxContent = styled.View`
-    width: 80%;
+    
 `
 
 export const ButtonCopyLink = styled.TouchableOpacity`
@@ -46,8 +45,7 @@ export const ButtonCopyLink = styled.TouchableOpacity`
     align-items: center;
     border: 1px solid ${({ theme }) => theme.COLORS.BLUE};
     align-self: flex-end;
-    margin-top: 10px;
-    margin-right: 10px;
+    margin: 10px;
 `
 
 export const CopyText = styled.Text`

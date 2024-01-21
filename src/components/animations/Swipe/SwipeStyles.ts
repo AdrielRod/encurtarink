@@ -11,22 +11,30 @@ export const StyledSwipeable = styled(Swipeable)``;
 
 export const RightActionsContainer = styled.View`
   flex-direction: row;
-  width: 116px;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  gap: 3px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 `;
 
 export const RightActionContainer = styled(Animated.View)`
   flex: 1;
   flex-direction: row;
   align-self: center;
-  margin-right: 5px;
+  justify-content: center;
+  align-items: center;
+  
 `;
 
 export const RightActionButton = styled(TouchableOpacity)<ButtonTypes>`
     background-color: ${({color}) => color};
     border-radius: 8px;
     width: 58px;
-    height: 58px;
+    height: 54px;
     justify-content: center;
     align-items: center;
-    margin-right: 10px;
+    
+
 `;

@@ -1,4 +1,4 @@
-import { Linking } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { Ionicons } from '@expo/vector-icons'
 import { BoxContent, ButtonCopyLink, ButtonLink, Container, CopyText, LinkText } from "./CardLinkStyles"
@@ -22,6 +22,7 @@ export default function CardLink({linkText}: ICardLink) {
 
     async function copyToClipboard(){
         await Clipboard.setStringAsync(linkText)
+        Alert.alert('URL copiada com sucesso:', linkText)
     }
 
     return (

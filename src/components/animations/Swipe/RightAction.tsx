@@ -10,21 +10,27 @@ interface IRightActionProps {
     progress: Animated.AnimatedInterpolation<number>;
     type: 'Home' | 'Favorite',
     icon: 'favorite' | 'trash'
+    index: number;
     close: () => void;
-    onPress: () => void;
+    pressFavorite?: (index: number) => void;
+    pressDelete?: (index: number) => void;
 }
 
 
-export default function renderRightAction({ color, x, progress, type, icon,close, onPress }: IRightActionProps){
+export default function renderRightAction({ color, x, progress, type, icon, index,close, pressFavorite, pressDelete }: IRightActionProps){
     const translateX = progress.interpolate({
         inputRange: [0, 1],
         outputRange: [x, 0],
     });
 
-    function pressHandler(){
+    function pressHandler() {
+        if (icon === "favorite" && pressFavorite) {
+          pressFavorite(index);
+        } else if (pressDelete) {
+          pressDelete(index);
+        }
         close();
-        onPress();
-    };
+      }
 
     return (
         <RightActionContainer style={{ transform: [{ translateX: translateX }] }}>

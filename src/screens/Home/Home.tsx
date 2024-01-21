@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useState } from "react"
 import { useFocusEffect } from "@react-navigation/native"
-import { Keyboard } from "react-native"
+import { Keyboard, Alert as Alerta } from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import {
@@ -8,7 +8,6 @@ import {
     FlatList,
     WelcomeText,
 } from "./HomeStyles"
-import { apiLink } from "../../api/axios-config"
 import {
     Alert,
     CardLink,
@@ -20,6 +19,8 @@ import {
 import { AuthContext } from "../../contexts/AuthContext"
 import { AreaPressable } from "../Login/LoginStyles"
 import { AnimatedSwipe } from "../../components/animations"
+import { isLinkInFavorites } from "../../helpers"
+import { updateLinksStorage, createLink, getFavorites, getLinks, updateFavoritesStorage } from "../../services"
 
 export default function Home() {
 
@@ -29,47 +30,78 @@ export default function Home() {
 
     useFocusEffect(
         useCallback(() => {
-            let isActive = true
+            let isActive = true;
 
-            const handleGetLinks = async () => {
-                if (!isActive) return
+            async function fetchLinks() {
+                if (!isActive) return;
 
                 try {
-                    const linksJSON = await AsyncStorage.getItem("@links")
-                    const linksArray: string[] = JSON.parse(linksJSON || '[]')
-                    setAllLinks(linksArray)
+                    const links = await getLinks();
+                    setAllLinks(links);
                 } catch (error) {
-                    console.error(error)
+                    console.error(error);
                 }
             }
 
-            handleGetLinks()
-
+            fetchLinks()
             return () => {
-                isActive = false
-            }
+                isActive = false;
+            };
         }, [setAllLinks])
     )
 
-    async function addLink() {
-        if (!link) return
+    async function linkAdd() {
+        if (!link) return;
+
         try {
-            const response = await apiLink.post('create/', {
-                url: link,
-                ttl: 600800,
-            })
-
-            const newLink = response.data.link_url
-            const updatedLinks = [...allLinks, newLink]
-
-            setAllLinks(oldLinks => [...oldLinks, newLink])
-
-            await AsyncStorage.setItem('@links', JSON.stringify(updatedLinks))
-            setLink('')
+            const newLink = await createLink(link, 600800);
+            setAllLinks((prevLinks) => [...prevLinks, newLink]);
+            await updateLinksStorage([...allLinks, newLink]);
+            setLink('');
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     }
+
+
+    async function linkDelete(link: string) {
+        try {
+            const currentFavorites = await getFavorites()
+            const updatedLinks = allLinks.filter((item) => item !== link)
+
+            await AsyncStorage.setItem('@links', JSON.stringify(updatedLinks))
+
+            setAllLinks(updatedLinks)
+
+            if (currentFavorites.includes(link)) {
+                const updatedFavorites = currentFavorites.filter((item: string) => item !== link)
+                await AsyncStorage.setItem('@favorites', JSON.stringify(updatedFavorites))
+            }
+
+            Alerta.alert(`${link} foi removido com sucesso.`)
+        } catch (error) {
+            console.error('Erro ao remover o link:', error)
+        }
+    }
+
+
+    async function linkFavorite(link: string) {
+        try {
+            const currentFavorites = await getFavorites()
+
+            if (!isLinkInFavorites(link, currentFavorites)) {
+                const updatedFavorites = [...currentFavorites, link]
+                await AsyncStorage.setItem('@favorites', JSON.stringify(updatedFavorites))
+
+                Alerta.alert(`${link} foi adicionado com sucesso.`)
+            } else {
+                Alerta.alert(`${link} já está nos favoritos.`)
+            }
+        } catch (error) {
+            console.error('Erro ao adicionar aos favoritos:', error)
+        }
+    }
+
 
     function dismissKeyboard() {
         Keyboard.dismiss()
@@ -86,39 +118,36 @@ export default function Home() {
                     type='CREATELINK'
                     value={link}
                     setValue={setLink}
-                    onPress={addLink}
+                    onPress={linkAdd}
+                />
+                <Title
+                    type="WHITE"
+                    containerStyles={{ marginLeft: 10, marginTop: 10 }}
+                    text="Histórico"
+                />
+                <Alert
+                    text="Aperte no ícone para navegar para o link encurtado."
+                    type="info"
+                    containerStyles={{ marginLeft: 10, marginTop: 5 }}
+                />
+                <Alert
+                    text="Arraste para o lado esquerdo para favoritar ou deletar"
+                    type="info"
+                    containerStyles={{ marginLeft: 10, marginTop: 5, marginBottom: 20 }}
                 />
 
                 <FlatList
                     data={allLinks}
-                    inverted
                     style={{ marginBottom: 60 }}
-                    renderItem={({ item }) => (
-                        <AnimatedSwipe onPress={() => { }}>
+                    renderItem={({ item, index }) => (
+                        <AnimatedSwipe
+                            pressDelete={(index) => linkDelete(allLinks[index])}
+                            pressFavorite={(index) => linkFavorite(allLinks[index])}
+                            index={index}
+                        >
                             <CardLink linkText={item as string} />
                         </AnimatedSwipe>
                     )}
-                    ListFooterComponent={() => (
-                        <>
-
-                            <Title
-                                type="WHITE"
-                                containerStyles={{ marginLeft: 10, marginTop: 10 }}
-                                text="Histórico"
-                            />
-                            <Alert
-                                text="Aperte no ícone para navegar para o link encurtado."
-                                type="info"
-                                containerStyles={{ marginLeft: 10, marginTop: 5 }}
-                            />
-                            <Alert
-                                text="Arraste para o lado esquerdo para favoritar ou deletar"
-                                type="info"
-                                containerStyles={{ marginLeft: 10, marginTop: 5, marginBottom: 20 }}
-                            />
-                        </>
-                    )}
-
                 />
             </Container>
         </AreaPressable>
