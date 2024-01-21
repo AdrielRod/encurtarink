@@ -1,7 +1,7 @@
 import styled from "styled-components/native"
 
 type TitleProps = {
-    type: 'info' | 'alert-circle'
+    type: 'info' | 'alert-circle' | 'loading'
 }
 
 export const Container = styled.View`
@@ -11,7 +11,11 @@ export const Container = styled.View`
 `
 
 export const Text = styled.Text<TitleProps>`
-    color: ${({theme, type}) => type == 'info' ?  theme.COLORS.WHITE : theme.COLORS.RED};
+    ${({theme, type}) => type == 'info' &&  `color: ${theme.COLORS.WHITE}`};
+    ${({theme, type}) => type == 'alert-circle' &&  `color: ${theme.COLORS.RED}`};
+    ${({theme, type}) => type == 'loading' &&  `color: ${theme.COLORS.BLUE}`};
     font-size: 12px;
     font-weight: 500;
 `
+
+export const Loading = styled.ActivityIndicator``

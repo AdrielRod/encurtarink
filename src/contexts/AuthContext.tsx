@@ -1,6 +1,7 @@
 import React, {useState, createContext, ReactNode, useEffect} from "react";
 import { apiLogin } from "../api/axios-config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 
 type AuthContextData = {
     user: UserProps | null;
@@ -76,6 +77,7 @@ export function AuthProvider({children}: AuthProviderProps){
             await AsyncStorage.setItem("@user", JSON.stringify(data))
         } catch (error) {
             console.log("Erro ao acessar: ", error)
+            Alert.alert("Desculpe, aconteceu um erro.")
         } finally { setLoadingAuth(false) }
 
     }

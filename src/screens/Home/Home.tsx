@@ -20,46 +20,55 @@ import { AuthContext } from "../../contexts/AuthContext"
 import { AreaPressable } from "../Login/LoginStyles"
 import { AnimatedSwipe } from "../../components/animations"
 import { isLinkInFavorites } from "../../helpers"
-import { updateLinksStorage, createLink, getFavorites, getLinks, updateFavoritesStorage } from "../../services"
+import { updateLinksStorage, createLink, getFavorites, getLinks } from "../../services"
 
 export default function Home() {
 
     const { user } = useContext(AuthContext)
     const [link, setLink] = useState<string>('')
     const [allLinks, setAllLinks] = useState<string[]>([])
+    const [errorText, setErrorText] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
 
     useFocusEffect(
         useCallback(() => {
-            let isActive = true;
+            let isActive = true
 
             async function fetchLinks() {
-                if (!isActive) return;
+                if (!isActive) return
 
                 try {
-                    const links = await getLinks();
-                    setAllLinks(links);
+                    const links = await getLinks()
+                    setAllLinks(links)
                 } catch (error) {
-                    console.error(error);
+                    console.error(error)
                 }
             }
 
             fetchLinks()
             return () => {
-                isActive = false;
-            };
+                isActive = false
+            }
         }, [setAllLinks])
     )
 
     async function linkAdd() {
-        if (!link) return;
+        if (!link) {
+            setErrorText("Digite o link para podermos encurtar.")
+            return
+        }
 
         try {
-            const newLink = await createLink(link, 600800);
-            setAllLinks((prevLinks) => [...prevLinks, newLink]);
-            await updateLinksStorage([...allLinks, newLink]);
-            setLink('');
+            setLoading(true)
+
+            const newLink = await createLink(link, 600800)
+            setAllLinks((prevLinks) => [...prevLinks, newLink])
+            await updateLinksStorage([...allLinks, newLink])
+            setLink('')
+            
+            setLoading(false)
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     }
 
@@ -117,9 +126,27 @@ export default function Home() {
                     placeholder='Link'
                     type='CREATELINK'
                     value={link}
-                    setValue={setLink}
+                    setValue={(text) => {
+                        setLink(text)
+                        setErrorText('')
+                    }}
                     onPress={linkAdd}
                 />
+                {errorText && (
+                    <Alert
+                        text={errorText}
+                        type="alert-circle"
+                        containerStyles={{ marginLeft: 10, marginTop: 5 }}
+                    />
+                )}
+
+                {loading && (
+                     <Alert
+                     text='Estamos encurtando, aguarde.'
+                     type="loading"
+                     containerStyles={{ marginLeft: 10, marginTop: 5 }}
+                 />
+                )}
                 <Title
                     type="WHITE"
                     containerStyles={{ marginLeft: 10, marginTop: 10 }}
