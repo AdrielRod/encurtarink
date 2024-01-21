@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Entypo } from '@expo/vector-icons'
+import { Entypo, MaterialCommunityIcons} from '@expo/vector-icons'
 import { ButtonIcon, Container, Input } from './CustomInputStyles';
 import Label from '../Label/Label';
 import { theme } from '../../../theme/theme';
@@ -16,9 +16,9 @@ export default function CustomInput({ type, placeholder, value, setValue }: ICus
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
     const [isFocused, setIsFocused] = useState<boolean>(false)
 
-    function toggleVisibilityPassword(){
+    function toggleVisibilityPassword() {
         setPasswordVisible(!passwordVisible)
-        if(!isFocused){
+        if (!isFocused) {
             setIsFocused(false)
         }
     }
@@ -57,18 +57,23 @@ export default function CustomInput({ type, placeholder, value, setValue }: ICus
             </Container>
         )
     } else {
-        <Container type={type} isActived={isFocused}>
-            <Input
-                value={value}
-                onChangeText={(text) => setValue(text)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                isActived={isFocused}
-                placeholder={placeholder}
-                type={type}
-
-            />
-        </Container>
+        return (
+            <Container type={type} isActived={isFocused}>
+                <Input
+                    value={value}
+                    onChangeText={(text) => setValue(text)}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    isActived={isFocused}
+                    placeholder={placeholder}
+                    type={type}
+                    placeholderTextColor={theme.COLORS.GRAY_SECONDARY}
+                />
+                <ButtonIcon onPress={toggleVisibilityPassword}>
+                    <MaterialCommunityIcons name='link-plus' size={35} color={theme.COLORS.WHITE} />
+                </ButtonIcon>
+            </Container>
+        )
     }
 
 
