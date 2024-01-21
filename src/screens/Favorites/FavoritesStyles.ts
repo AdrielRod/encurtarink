@@ -12,3 +12,5 @@ export const WelcomeText = styled.Text`
     margin-top: 10px;
     margin-bottom: 20px;
 `
+
+export const FlatList = styled.FlatList``
