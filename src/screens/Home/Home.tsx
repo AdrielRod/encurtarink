@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import {
     Container,
+    FlatList,
     WelcomeText,
 } from "./HomeStyles"
 import { apiLink } from "../../api/axios-config"
@@ -55,13 +56,14 @@ export default function Home() {
         try {
             const response = await apiLink.post('create/', {
                 url: link,
-                ttl: 600,
+                ttl: 600800,
             })
 
             const newLink = response.data.link_url
             const updatedLinks = [...allLinks, newLink]
 
-            setAllLinks(updatedLinks)
+            setAllLinks(oldLinks => [...oldLinks, newLink])
+
             await AsyncStorage.setItem('@links', JSON.stringify(updatedLinks))
             setLink('')
         } catch (error) {
@@ -87,27 +89,37 @@ export default function Home() {
                     onPress={addLink}
                 />
 
-                <Title
-                    type="WHITE"
-                    containerStyles={{ marginLeft: 10, marginTop: 10 }}
-                    text="Histórico"
-                />
-                <Alert
-                    text="Aperte no ícone para navegar para o link encurtado."
-                    type="info"
-                    containerStyles={{ marginLeft: 10, marginTop: 5 }}
-                />
-                <Alert
-                    text="Arraste para o lado esquerdo para favoritar ou deletar"
-                    type="info"
-                    containerStyles={{ marginLeft: 10, marginTop: 5, marginBottom: 20 }}
-                />
+                <FlatList
+                    data={allLinks}
+                    inverted
+                    style={{ marginBottom: 60 }}
+                    renderItem={({ item }) => (
+                        <AnimatedSwipe onPress={() => { }}>
+                            <CardLink linkText={item as string} />
+                        </AnimatedSwipe>
+                    )}
+                    ListFooterComponent={() => (
+                        <>
 
-                {allLinks.map((item, index) => (
-                    <AnimatedSwipe onPress={() => { }} key={index}>
-                        <CardLink linkText={item} />
-                    </AnimatedSwipe>
-                ))}
+                            <Title
+                                type="WHITE"
+                                containerStyles={{ marginLeft: 10, marginTop: 10 }}
+                                text="Histórico"
+                            />
+                            <Alert
+                                text="Aperte no ícone para navegar para o link encurtado."
+                                type="info"
+                                containerStyles={{ marginLeft: 10, marginTop: 5 }}
+                            />
+                            <Alert
+                                text="Arraste para o lado esquerdo para favoritar ou deletar"
+                                type="info"
+                                containerStyles={{ marginLeft: 10, marginTop: 5, marginBottom: 20 }}
+                            />
+                        </>
+                    )}
+
+                />
             </Container>
         </AreaPressable>
     )
