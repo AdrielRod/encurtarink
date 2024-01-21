@@ -9,9 +9,10 @@ interface ICustomInput {
     placeholder: string;
     value: string;
     setValue: (text: string) => void;
+    onPress?: () => void;
 }
 
-export default function CustomInput({ type, placeholder, value, setValue }: ICustomInput) {
+export default function CustomInput({ type, placeholder, value, setValue, onPress }: ICustomInput) {
 
     const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
     const [isFocused, setIsFocused] = useState<boolean>(false)
@@ -69,7 +70,7 @@ export default function CustomInput({ type, placeholder, value, setValue }: ICus
                     type={type}
                     placeholderTextColor={theme.COLORS.GRAY_SECONDARY}
                 />
-                <ButtonIcon onPress={toggleVisibilityPassword}>
+                <ButtonIcon onPress={onPress}>
                     <MaterialCommunityIcons name='link-plus' size={35} color={theme.COLORS.WHITE} />
                 </ButtonIcon>
             </Container>

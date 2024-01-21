@@ -9,6 +9,7 @@ export const Container = styled.SafeAreaView`
     flex-direction: row;
     align-items: center;
     margin-left: 10px;
+    margin-bottom: 10px;
 `
 
 export const ButtonLink = styled.TouchableOpacity`
