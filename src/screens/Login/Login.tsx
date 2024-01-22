@@ -1,9 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { ActivityIndicator, Alert as Alerta, Button, Image, Keyboard, StyleSheet, Text, TextInput, View } from 'react-native';
-
+import { ActivityIndicator, Keyboard } from 'react-native';
+import { 
+    AreaPressable,
+    ButtonLogin, 
+    Container, 
+    ContainerInput, 
+    Logo } from './LoginStyles';
 import { AuthContext } from '../../contexts/AuthContext';
-import { AreaPressable, ButtonLogin, Container, ContainerInput, Logo } from './LoginStyles';
 import { CustomInput, Label, Alert } from '../../components/interface';
 import { theme } from '../../theme/theme';
 
@@ -30,8 +33,6 @@ export default function Login() {
             return
         }
     }
-
-
 
     return (
         <AreaPressable onPress={() => Keyboard.dismiss()}>

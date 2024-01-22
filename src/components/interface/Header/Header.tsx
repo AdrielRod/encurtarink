@@ -1,9 +1,8 @@
-import { ViewStyle } from "react-native";
+import { useContext } from "react";
 import {Ionicons} from '@expo/vector-icons'
 import { Container, Logo } from "./HeaderStyles"
 import { ButtonIcon } from "../CustomInput/CustomInputStyles";
 import { theme } from "../../../theme/theme";
-import { useContext } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
 
 export default function Header() {

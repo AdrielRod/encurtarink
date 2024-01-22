@@ -8,7 +8,6 @@ interface IRightActionProps {
     color: string;
     x: number;
     progress: Animated.AnimatedInterpolation<number>;
-    type: 'Home' | 'Favorite',
     icon: 'favorite' | 'trash'
     index: number;
     close: () => void;
@@ -17,7 +16,7 @@ interface IRightActionProps {
 }
 
 
-export default function renderRightAction({ color, x, progress, type, icon, index,close, pressFavorite, pressDelete }: IRightActionProps){
+export default function renderRightAction({ color, x, progress, icon, index,close, pressFavorite, pressDelete }: IRightActionProps){
     const translateX = progress.interpolate({
         inputRange: [0, 1],
         outputRange: [x, 0],

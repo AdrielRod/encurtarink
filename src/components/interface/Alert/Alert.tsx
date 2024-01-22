@@ -1,6 +1,6 @@
 import { ViewStyle } from "react-native";
-import { Container, Loading, Text } from "./AlertStyles"
 import {Feather} from '@expo/vector-icons'
+import { Container, Loading, Text } from "./AlertStyles"
 import { theme } from "../../../theme/theme";
 
 interface ILabel {
